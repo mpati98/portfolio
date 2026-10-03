@@ -1,0 +1,57 @@
+{
+  "name": "Duang Mai",
+  "kicker": "portfolio",
+  "headline": "Marketing operations, built with an engineer's mindset.",
+  "intro": "I turn event data into reliable systems and clear reports, and I build the tools in between.",
+  "projects": [
+    {
+      "tag": "Full-stack",
+      "title": "Amber",
+      "summary": "A private life-management app: projects and finances, reading and notes, English practice with an AI tutor, and a daily digest. A Flutter web client over a Next.js API with Postgres.",
+      "stack": "Flutter / Next.js / PostgreSQL / Drizzle / Vercel"
+    },
+    {
+      "tag": "Data & Marketing",
+      "title": "[Event data project name]",
+      "summary": "[Describe at a high level how event registrations become performance reports. No real data and no internal screenshots.]",
+      "stack": "[Tools used]"
+    },
+    {
+      "tag": "Hardware",
+      "title": "Mecanum robot car",
+      "summary": "A four-wheel-drive mecanum robot car built around a Raspberry Pi Zero 2W. [What it can do today.]",
+      "stack": "Raspberry Pi Zero 2W / Mecanum chassis"
+    }
+  ],
+  "about": {
+    "label": "About",
+    "heading": "From machines to marketing data",
+    "paragraphs": [
+      "I work in marketing operations at a company that runs offline events connecting students with international universities. My focus is the data side: collecting it cleanly, keeping event systems reliable, and turning results into reports people can act on.",
+      "I come from a mechatronics engineering background (3+ years), so I like to treat reporting systems like machines: clear inputs, observable behavior, fewer surprises. Outside work I build my own apps and hardware projects."
+    ],
+    "facts": [
+      { "term": "Role", "value": "Marketing operations" },
+      { "term": "Focus", "value": "Data collection, event systems, performance reporting" },
+      { "term": "Background", "value": "Mechatronics engineering, 3+ years" },
+      { "term": "Currently learning", "value": "Cloud operations for larger datasets" }
+    ]
+  },
+  "skills": {
+    "label": "Skills",
+    "heading": "What I work with",
+    "groups": [
+      { "title": "Data & reporting", "items": ["Event data collection", "Performance reporting", "PostgreSQL"] },
+      { "title": "Web & apps", "items": ["Next.js", "TypeScript", "Tailwind CSS", "Flutter", "Drizzle ORM", "Vercel"] },
+      { "title": "Hardware", "items": ["Mechatronics engineering", "Raspberry Pi"] }
+    ]
+  },
+  "contact": {
+    "label": "Contact",
+    "heading": "Let's talk.",
+    "intro": "[One sentence about what you would like people to contact you for.]",
+    "email": "[your@email.com]",
+    "linkedin": "[linkedin.com/in/your-name]",
+    "github": "[github.com/your-name]"
+  }
+}
