@@ -1,6 +1,7 @@
 // Kiểm tra trước khi deploy (KHÔNG gắn vào build): `npm run check`.
 // 1) Mọi giá trị trong src/content/site.json còn chứa đoạn "[...]" (chỗ giữ chỗ).
 // 2) NEXT_PUBLIC_SITE_URL phải được đặt và không còn là localhost.
+// 3) NEXT_PUBLIC_API_URL (backend form liên hệ) phải được đặt, là https và không phải localhost.
 // Thoát mã 1 nếu còn vấn đề nào. Biến môi trường lấy từ shell, và từ
 // .env.local nếu có (chỉ đọc — xem script "check" trong package.json).
 import { readFileSync } from "node:fs";
@@ -37,6 +38,20 @@ if (!siteUrl) {
   console.log(`Lỗi: NEXT_PUBLIC_SITE_URL vẫn là localhost (${siteUrl}).`);
 } else {
   console.log(`NEXT_PUBLIC_SITE_URL = ${siteUrl}`);
+}
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+if (!apiUrl) {
+  failed = true;
+  console.log("Lỗi: NEXT_PUBLIC_API_URL chưa đặt (giá trị thật: https://api.duangmai.io.vn).");
+} else if (/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/i.test(apiUrl)) {
+  failed = true;
+  console.log(`Lỗi: NEXT_PUBLIC_API_URL vẫn là localhost (${apiUrl}).`);
+} else if (!/^https:\/\//i.test(apiUrl)) {
+  failed = true;
+  console.log(`Lỗi: NEXT_PUBLIC_API_URL phải dùng https (${apiUrl}).`);
+} else {
+  console.log(`NEXT_PUBLIC_API_URL = ${apiUrl}`);
 }
 
 process.exit(failed ? 1 : 0);
