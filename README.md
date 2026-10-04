@@ -19,7 +19,7 @@ npm run check    # chỗ giữ chỗ trong site.json + NEXT_PUBLIC_SITE_URL / NE
 
 | Biến | Giá trị production | Dùng cho |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://duangmai.io.vn` (không `/` cuối) | metadataBase, sitemap, robots, mã QR trên name card |
+| `NEXT_PUBLIC_SITE_URL` | `https://duangmai.io.vn` (không `/` cuối) | metadataBase, sitemap, robots, canonical của `/contact`, mã QR trên name card (mã hoá `<URL>/contact`) |
 | `NEXT_PUBLIC_API_URL` | `https://api.duangmai.io.vn` (không `/` cuối) | form liên hệ gửi tới `<URL>/api/public/contact` — thiếu thì bản production khoá form và mời gửi email |
 
 Cả hai được nhúng vào HTML/JS **lúc build** — đổi giá trị phải build lại.
@@ -32,6 +32,13 @@ amber-v4 chỉ trả header CORS cho **một** origin, đặt bằng biến `POR
 bên amber-v4: production là `https://duangmai.io.vn`, nên form chỉ gửi được từ
 domain đó. Khi dev, chạy amber-v4 với `PORTFOLIO_ORIGIN=http://localhost:3001`
 (amber-v4 đọc biến này lúc build — đổi phải build lại).
+
+## Trang
+
+| Đường dẫn | Nội dung |
+|---|---|
+| `/` | trang chủ; name card có mã QR mã hoá `${NEXT_PUBLIC_SITE_URL}/contact` (bấm vào QR trên trang chủ thì cuộn xuống form `#contact-form`) |
+| `/contact` | chỉ có form liên hệ, tối ưu cho điện thoại (đích của mã QR). `noindex, nofollow` và không có trong sitemap |
 
 ## Sửa nội dung
 

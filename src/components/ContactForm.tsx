@@ -18,7 +18,16 @@ const label = "text-xs font-medium uppercase tracking-[0.14em] text-muted";
 const field =
   "mt-2 block w-full rounded-ui border border-white/20 bg-ink-950 px-3.5 py-3 text-base text-fg placeholder:text-muted/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
-export function ContactForm({ email, mailto }: { email: string; mailto: string | null }) {
+// showTitle=false: trang đã có tiêu đề riêng (vd /contact có H1 "Leave a message") — không lặp lại.
+export function ContactForm({
+  email,
+  mailto,
+  showTitle = true,
+}: {
+  email: string;
+  mailto: string | null;
+  showTitle?: boolean;
+}) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const sending = useRef(false); // chống bấm đúp trước khi state kịp render lại
 
@@ -76,15 +85,18 @@ export function ContactForm({ email, mailto }: { email: string; mailto: string |
     <form
       id="contact-form"
       onSubmit={onSubmit}
-      aria-labelledby="contact-form-heading"
+      aria-labelledby={showTitle ? "contact-form-heading" : undefined}
+      aria-label={showTitle ? undefined : "Leave a message"}
       className="@container min-w-0 flex-[1_1_400px] scroll-mt-6 rounded-ui border border-white/14 p-7"
     >
-      <h3 id="contact-form-heading" className="font-serif-display text-[22px] font-bold">
-        Leave a message
-      </h3>
+      {showTitle && (
+        <h3 id="contact-form-heading" className="mb-5 font-serif-display text-[22px] font-bold">
+          Leave a message
+        </h3>
+      )}
 
       {/* Form đủ rộng (desktop) thì Name/Email cạnh nhau — form thấp lại, cân với cột trái. */}
-      <div className="mt-5 grid gap-4 @[26rem]:grid-cols-2">
+      <div className="grid gap-4 @[26rem]:grid-cols-2">
         <label className="block">
           <span className={label}>Name</span>
           <input name="name" type="text" required autoComplete="name" placeholder="Your name" className={`${field} min-h-12`} />

@@ -4,5 +4,5 @@
  */
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001").replace(/\/+$/, "");
 
-/** Đích của mã QR trên name card. */
-export const contactFormUrl = `${siteUrl}/#contact-form`;
+/** Trang /contact (chỉ có form) — đích của mã QR trên name card, và canonical của trang đó. */
+export const contactPageUrl = `${siteUrl}/contact`;

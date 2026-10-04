@@ -2,7 +2,7 @@ import site from "@/content/site.json";
 import { ContactForm } from "@/components/ContactForm";
 import { QrCode } from "@/components/QrCode";
 import { contactHref } from "@/lib/placeholder";
-import { contactFormUrl } from "@/lib/site-url";
+import { contactPageUrl } from "@/lib/site-url";
 
 const container = "mx-auto w-full max-w-[1040px] px-6";
 const sectionLabel = "text-xs font-medium uppercase tracking-[0.14em] text-accent";
@@ -190,11 +190,12 @@ export default function Home() {
                   </div>
                   <a
                     href="#contact-form"
-                    aria-label="Scan the QR code or tap to open the contact form"
+                    aria-label="Scan the QR code to open the contact form, or tap to jump to it"
                     title="Scan to leave a message"
                     className="shrink-0 rounded-ui bg-fg p-2"
                   >
-                    <QrCode value={contactFormUrl} size={72} />
+                    {/* Quét bằng điện thoại → trang /contact; bấm trên trang chủ → cuộn xuống form. */}
+                    <QrCode value={contactPageUrl} size={72} />
                   </a>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-white/14 pt-1">
