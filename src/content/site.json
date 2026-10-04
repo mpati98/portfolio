@@ -14,12 +14,14 @@
       "tag": "Data & Marketing",
       "title": "[Event data project name]",
       "summary": "[Describe at a high level how event registrations become performance reports. No real data and no internal screenshots.]",
-      "stack": "[Tools used]"
+      "stack": "[Tools used]",
+      "hidden": true
     },
     {
       "tag": "Hardware",
       "title": "Mecanum robot car",
-      "summary": "A four-wheel-drive mecanum robot car built around a Raspberry Pi Zero 2W. [What it can do today.]",
+      "summary": "A four-wheel-drive mecanum robot car built around a Raspberry Pi Zero 2W.",
+      "todo": "Describe what it can do today.",
       "stack": "Raspberry Pi Zero 2W / Mecanum chassis"
     }
   ],

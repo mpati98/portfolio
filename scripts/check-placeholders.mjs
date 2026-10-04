@@ -1,5 +1,7 @@
 // Kiểm tra trước khi deploy (KHÔNG gắn vào build): `npm run check`.
-// 1) Mọi giá trị trong src/content/site.json còn chứa đoạn "[...]" (chỗ giữ chỗ).
+// 1) Mọi giá trị trong src/content/site.json còn chứa đoạn "[...]" (chỗ giữ chỗ) — trừ
+//    mục có "hidden": true (bản nháp không hiện trên trang, chỉ liệt kê) và khoá "todo"
+//    (ghi chú nhắc việc, không hiện trên trang, chỉ liệt kê).
 // 2) NEXT_PUBLIC_SITE_URL phải được đặt và không còn là localhost.
 // 3) NEXT_PUBLIC_API_URL (backend form liên hệ) phải được đặt, là https và không phải localhost.
 // Thoát mã 1 nếu còn vấn đề nào. Biến môi trường lấy từ shell, và từ
@@ -8,16 +10,23 @@ import { readFileSync } from "node:fs";
 
 const site = JSON.parse(readFileSync(new URL("../src/content/site.json", import.meta.url), "utf8"));
 const placeholders = [];
+const hiddenDrafts = [];
+const todos = [];
 
-(function walk(node, path) {
+(function walk(node, path, hidden) {
   if (typeof node === "string") {
-    if (/\[[^\]]*\]/.test(node)) placeholders.push([path, node]);
+    if (/\[[^\]]*\]/.test(node)) (hidden ? hiddenDrafts : placeholders).push([path, node]);
   } else if (Array.isArray(node)) {
-    node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    node.forEach((v, i) => walk(v, `${path}[${i}]`, hidden));
   } else if (node && typeof node === "object") {
-    for (const [k, v] of Object.entries(node)) walk(v, path ? `${path}.${k}` : k);
+    const isHidden = hidden || node.hidden === true;
+    for (const [k, v] of Object.entries(node)) {
+      const childPath = path ? `${path}.${k}` : k;
+      if (k === "todo") todos.push([childPath, v]);
+      else walk(v, childPath, isHidden);
+    }
   }
-})(site, "");
+})(site, "", false);
 
 let failed = false;
 
@@ -26,9 +35,20 @@ if (placeholders.length) {
   console.log(`Còn ${placeholders.length} chỗ giữ chỗ chưa điền:`);
   for (const [path, value] of placeholders) console.log(`  ${path}: ${value}`);
 } else {
-  console.log("Không còn chỗ giữ chỗ nào trong site.json.");
+  console.log("Không còn chỗ giữ chỗ nào trong phần đang hiển thị của site.json.");
 }
 
+if (hiddenDrafts.length) {
+  console.log("\nHidden drafts (not shown on the site):");
+  for (const [path, value] of hiddenDrafts) console.log(`  ${path}: ${value}`);
+}
+
+if (todos.length) {
+  console.log("\nTODO notes:");
+  for (const [path, value] of todos) console.log(`  ${path}: ${typeof value === "string" ? value : JSON.stringify(value)}`);
+}
+
+console.log("");
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 if (!siteUrl) {
   failed = true;

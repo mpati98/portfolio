@@ -18,6 +18,9 @@ const defaultTag = { text: "text-accent", border: "border-line-row" };
 
 export default function Home() {
   const { contact } = site;
+  // Mục "hidden": true là bản nháp chưa có nội dung — không hiện. Hết dự án thì ẩn cả section + link.
+  const projects = site.projects.filter((p) => !("hidden" in p && p.hidden === true));
+  const hasProjects = projects.length > 0;
   const mailto = contactHref("email", contact.email);
   const socials = [
     { label: "LinkedIn", href: contactHref("linkedin", contact.linkedin) },
@@ -42,7 +45,7 @@ export default function Home() {
             {site.name}
           </a>
           <nav aria-label="Primary" className="flex flex-wrap items-center gap-x-5 gap-y-1">
-            {["Projects", "About", "Skills"].map((item) => (
+            {[...(hasProjects ? ["Projects"] : []), "About", "Skills"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -73,12 +76,14 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-[540px] text-lg text-muted">{site.intro}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a
-                href="#projects"
-                className="inline-flex min-h-12 items-center rounded-ui bg-accent px-6 font-medium text-ink-950 transition-opacity hover:opacity-90"
-              >
-                See projects
-              </a>
+              {hasProjects && (
+                <a
+                  href="#projects"
+                  className="inline-flex min-h-12 items-center rounded-ui bg-accent px-6 font-medium text-ink-950 transition-opacity hover:opacity-90"
+                >
+                  See projects
+                </a>
+              )}
               <a
                 href="#contact"
                 className="inline-flex min-h-12 items-center rounded-ui border border-white/24 px-6 font-medium transition-colors hover:border-white/50"
@@ -89,34 +94,36 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="projects" aria-labelledby="projects-heading" className="border-b border-line-section py-18">
-          <div className={container}>
-            <p className={sectionLabel}>Projects</p>
-            <h2 id="projects-heading" className={h2}>
-              Selected work
-            </h2>
-            <div className="mt-10 flex flex-wrap gap-5">
-              {site.projects.map((p) => {
-                const tag = tagStyles[p.tag] ?? defaultTag;
-                return (
-                  <article
-                    key={p.title}
-                    className={`flex min-w-[280px] flex-1 basis-[280px] flex-col rounded-ui border bg-[rgb(12_17_40/0.6)] p-6 ${tag.border}`}
-                  >
-                    <span
-                      className={`self-start rounded-ui border px-2 py-0.5 text-[11px] font-medium tracking-wide ${tag.text} ${tag.border}`}
+        {hasProjects && (
+          <section id="projects" aria-labelledby="projects-heading" className="border-b border-line-section py-18">
+            <div className={container}>
+              <p className={sectionLabel}>Projects</p>
+              <h2 id="projects-heading" className={h2}>
+                Selected work
+              </h2>
+              <div className="mt-10 flex flex-wrap gap-5">
+                {projects.map((p) => {
+                  const tag = tagStyles[p.tag] ?? defaultTag;
+                  return (
+                    <article
+                      key={p.title}
+                      className={`flex min-w-[280px] flex-1 basis-[280px] flex-col rounded-ui border bg-[rgb(12_17_40/0.6)] p-6 ${tag.border}`}
                     >
-                      {p.tag}
-                    </span>
-                    <h3 className="mt-4 font-serif-display text-2xl font-bold leading-tight">{p.title}</h3>
-                    <p className="mt-3 text-[15.5px] text-muted">{p.summary}</p>
-                    <p className="mt-auto pt-6 text-[13px] text-fg/80">{p.stack}</p>
-                  </article>
-                );
-              })}
+                      <span
+                        className={`self-start rounded-ui border px-2 py-0.5 text-[11px] font-medium tracking-wide ${tag.text} ${tag.border}`}
+                      >
+                        {p.tag}
+                      </span>
+                      <h3 className="mt-4 font-serif-display text-2xl font-bold leading-tight">{p.title}</h3>
+                      <p className="mt-3 text-[15.5px] text-muted">{p.summary}</p>
+                      <p className="mt-auto pt-6 text-[13px] text-fg/80">{p.stack}</p>
+                    </article>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section id="about" aria-labelledby="about-heading" className="border-b border-line-section py-18">
           <div className={`${container} grid gap-10 md:grid-cols-2 md:gap-14`}>
