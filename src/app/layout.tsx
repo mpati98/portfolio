@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Serif } from "next/font/google";
 import site from "@/content/site.json";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 // Cả hai là variable font trên Google Fonts: một file mỗi kiểu chữ đã gồm
@@ -21,11 +22,13 @@ const inter = Inter({
 const title = `${site.name} — Portfolio`;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title,
   description: site.headline,
   openGraph: {
     title,
     description: site.headline,
+    url: "/",
     type: "website",
   },
 };

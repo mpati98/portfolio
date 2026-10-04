@@ -31,27 +31,63 @@
       "I come from a mechatronics engineering background (3+ years), so I like to treat reporting systems like machines: clear inputs, observable behavior, fewer surprises. Outside work I build my own apps and hardware projects."
     ],
     "facts": [
-      { "term": "Role", "value": "Marketing operations" },
-      { "term": "Focus", "value": "Data collection, event systems, performance reporting" },
-      { "term": "Background", "value": "Mechatronics engineering, 3+ years" },
-      { "term": "Currently learning", "value": "Cloud operations for larger datasets" }
+      {
+        "term": "Role",
+        "value": "Marketing operations"
+      },
+      {
+        "term": "Focus",
+        "value": "Data collection, event systems, performance reporting"
+      },
+      {
+        "term": "Background",
+        "value": "Mechatronics engineering, 3+ years"
+      },
+      {
+        "term": "Currently learning",
+        "value": "Cloud operations for larger datasets"
+      }
     ]
   },
   "skills": {
     "label": "Skills",
     "heading": "What I work with",
     "groups": [
-      { "title": "Data & reporting", "items": ["Event data collection", "Performance reporting", "PostgreSQL"] },
-      { "title": "Web & apps", "items": ["Next.js", "TypeScript", "Tailwind CSS", "Flutter", "Drizzle ORM", "Vercel"] },
-      { "title": "Hardware", "items": ["Mechatronics engineering", "Raspberry Pi"] }
+      {
+        "title": "Data & reporting",
+        "items": [
+          "Event data collection",
+          "Performance reporting",
+          "PostgreSQL"
+        ]
+      },
+      {
+        "title": "Web & apps",
+        "items": [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "Flutter",
+          "Drizzle ORM",
+          "Vercel"
+        ]
+      },
+      {
+        "title": "Hardware",
+        "items": [
+          "Mechatronics engineering",
+          "Raspberry Pi"
+        ]
+      }
     ]
   },
   "contact": {
     "label": "Contact",
     "heading": "Let's talk.",
-    "intro": "[One sentence about what you would like people to contact you for.]",
-    "email": "[your@email.com]",
-    "linkedin": "[linkedin.com/in/your-name]",
-    "github": "[github.com/your-name]"
+    "intro": "I'm currently looking for new opportunities in marketing operations or data engineering.",
+    "email": "mpt.duang.dg@gmail.com",
+    "linkedin": "linkedin.com/in/tienduangmaiphan1998",
+    "github": "https://github.com/mpati98",
+    "cardTagline": "Marketing operations · Data systems"
   }
 }

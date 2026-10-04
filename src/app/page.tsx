@@ -1,5 +1,8 @@
 import site from "@/content/site.json";
+import { ContactForm } from "@/components/ContactForm";
+import { QrCode } from "@/components/QrCode";
 import { contactHref } from "@/lib/placeholder";
+import { contactFormUrl } from "@/lib/site-url";
 
 const container = "mx-auto w-full max-w-[1040px] px-6";
 const sectionLabel = "text-xs font-medium uppercase tracking-[0.14em] text-accent";
@@ -15,11 +18,11 @@ const defaultTag = { text: "text-accent", border: "border-line-row" };
 
 export default function Home() {
   const { contact } = site;
-  const contactRows = [
-    { label: "Email", kind: "email", value: contact.email },
-    { label: "LinkedIn", kind: "linkedin", value: contact.linkedin },
-    { label: "GitHub", kind: "github", value: contact.github },
-  ] as const;
+  const mailto = contactHref("email", contact.email);
+  const socials = [
+    { label: "LinkedIn", href: contactHref("linkedin", contact.linkedin) },
+    { label: "GitHub", href: contactHref("github", contact.github) },
+  ];
 
   return (
     <>
@@ -30,9 +33,12 @@ export default function Home() {
         Skip to content
       </a>
 
-      <header className="border-b border-line-section">
+      <header id="top" className="border-b border-line-section">
         <div className={`${container} flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3`}>
-          <a href="#" className="flex min-h-11 items-center font-serif-display text-xl font-bold">
+          <a href="#top" className="flex min-h-11 items-center gap-2.5 font-serif-display text-xl font-bold">
+            {/* Ảnh tĩnh nhỏ trong out/ — next/image cần loader riêng khi output: "export". alt rỗng vì tên đứng ngay cạnh. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-128.png" width={36} height={36} alt="" className="h-9 w-9" />
             {site.name}
           </a>
           <nav aria-label="Primary" className="flex flex-wrap items-center gap-x-5 gap-y-1">
@@ -155,44 +161,67 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" aria-labelledby="contact-heading" className="bg-ink-900 py-18">
-          <div className={`${container} grid gap-10 md:grid-cols-2 md:gap-14`}>
-            <div>
-              <p className={sectionLabel}>{contact.label}</p>
-              <h2
-                id="contact-heading"
-                className="mt-3 font-serif-display text-[clamp(36px,5vw,56px)] font-bold leading-[1.1]"
-              >
-                {contact.heading}
-              </h2>
-              <p className="mt-5 max-w-[440px] text-muted">{contact.intro}</p>
-            </div>
-            <ul className="self-end">
-              {contactRows.map((row, i) => {
-                const href = contactHref(row.kind, row.value);
-                return (
-                  <li
-                    key={row.label}
-                    className={`flex min-h-16 flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-line-row py-3 ${
-                      i === contactRows.length - 1 ? "border-b" : ""
-                    }`}
+        <section id="contact" aria-labelledby="contact-heading" className="bg-ink-900 pt-18 pb-20">
+          <div className={`${container} flex flex-wrap items-start gap-x-14 gap-y-10`}>
+            <div className="flex min-w-0 flex-[1_1_340px] flex-col gap-8">
+              <div>
+                <p className={sectionLabel}>{contact.label}</p>
+                <h2
+                  id="contact-heading"
+                  className="mt-3 font-serif-display text-[clamp(36px,5vw,56px)] font-bold leading-[1.1]"
+                >
+                  {contact.heading}
+                </h2>
+                <p className="mt-5 max-w-[520px] text-muted">{contact.intro}</p>
+              </div>
+
+              <div className="flex w-full max-w-[440px] flex-col gap-3 rounded-ui border border-white/14 bg-[rgb(24_32_74/0.55)] p-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="font-serif-display text-[clamp(24px,2.6vw,28px)] font-bold leading-tight">{site.name}</p>
+                    <p className="mt-1 text-sm text-muted">{contact.cardTagline}</p>
+                  </div>
+                  <a
+                    href="#contact-form"
+                    aria-label="Scan the QR code or tap to open the contact form"
+                    title="Scan to leave a message"
+                    className="shrink-0 rounded-ui bg-fg p-2"
                   >
-                    <span className="text-xs font-medium uppercase tracking-[0.14em] text-muted">{row.label}</span>
-                    {href ? (
-                      <a
-                        href={href}
-                        className="break-all text-lg font-medium transition-colors hover:text-accent"
-                        {...(row.kind === "email" ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-                      >
-                        {row.value}
-                      </a>
-                    ) : (
-                      <span className="break-all text-lg font-medium">{row.value}</span>
+                    <QrCode value={contactFormUrl} size={72} />
+                  </a>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-white/14 pt-1">
+                  {mailto ? (
+                    <a href={mailto} className="flex min-h-11 items-center text-sm font-medium break-all hover:text-accent">
+                      {contact.email}
+                    </a>
+                  ) : (
+                    <span className="flex min-h-11 items-center text-sm font-medium">{contact.email}</span>
+                  )}
+                  <div className="flex gap-4">
+                    {socials.map((s) =>
+                      s.href ? (
+                        <a
+                          key={s.label}
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex min-h-11 items-center text-sm text-muted hover:text-fg"
+                        >
+                          {s.label}
+                        </a>
+                      ) : (
+                        <span key={s.label} className="flex min-h-11 items-center text-sm text-muted">
+                          {s.label}
+                        </span>
+                      ),
                     )}
-                  </li>
-                );
-              })}
-            </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ContactForm email={contact.email} mailto={mailto} />
           </div>
         </section>
       </main>

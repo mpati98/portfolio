@@ -1,14 +1,16 @@
-// Liệt kê mọi giá trị trong src/content/site.json còn chỗ giữ chỗ: bắt đầu bằng
-// "[", hoặc chứa đoạn "[...]" giữa câu (vd "... [What it can do today.]").
-// Thoát mã 1 nếu còn. Chạy tay trước khi deploy: `npm run check`.
+// Kiểm tra trước khi deploy (KHÔNG gắn vào build): `npm run check`.
+// 1) Mọi giá trị trong src/content/site.json còn chứa đoạn "[...]" (chỗ giữ chỗ).
+// 2) NEXT_PUBLIC_SITE_URL phải được đặt và không còn là localhost.
+// Thoát mã 1 nếu còn vấn đề nào. Biến môi trường lấy từ shell, và từ
+// .env.local nếu có (chỉ đọc — xem script "check" trong package.json).
 import { readFileSync } from "node:fs";
 
 const site = JSON.parse(readFileSync(new URL("../src/content/site.json", import.meta.url), "utf8"));
-const found = [];
+const placeholders = [];
 
 (function walk(node, path) {
   if (typeof node === "string") {
-    if (node.trimStart().startsWith("[") || /\[[^\]]+\]/.test(node)) found.push([path, node]);
+    if (/\[[^\]]*\]/.test(node)) placeholders.push([path, node]);
   } else if (Array.isArray(node)) {
     node.forEach((v, i) => walk(v, `${path}[${i}]`));
   } else if (node && typeof node === "object") {
@@ -16,10 +18,25 @@ const found = [];
   }
 })(site, "");
 
-if (found.length === 0) {
+let failed = false;
+
+if (placeholders.length) {
+  failed = true;
+  console.log(`Còn ${placeholders.length} chỗ giữ chỗ chưa điền:`);
+  for (const [path, value] of placeholders) console.log(`  ${path}: ${value}`);
+} else {
   console.log("Không còn chỗ giữ chỗ nào trong site.json.");
-  process.exit(0);
 }
-console.log(`Còn ${found.length} chỗ giữ chỗ chưa điền:`);
-for (const [path, value] of found) console.log(`  ${path}: ${value}`);
-process.exit(1);
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+if (!siteUrl) {
+  failed = true;
+  console.log("Lỗi: NEXT_PUBLIC_SITE_URL chưa đặt (giá trị thật: https://duangmai.io.vn).");
+} else if (/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/i.test(siteUrl)) {
+  failed = true;
+  console.log(`Lỗi: NEXT_PUBLIC_SITE_URL vẫn là localhost (${siteUrl}).`);
+} else {
+  console.log(`NEXT_PUBLIC_SITE_URL = ${siteUrl}`);
+}
+
+process.exit(failed ? 1 : 0);
