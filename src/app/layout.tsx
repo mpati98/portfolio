@@ -19,7 +19,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const title = `${site.name} — Portfolio`;
+const title = site.name;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

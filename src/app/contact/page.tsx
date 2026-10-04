@@ -43,7 +43,7 @@ export default function ContactPage() {
 
       <div className="mt-4 flex flex-col">
         <Link href="/" className="flex min-h-11 items-center self-start text-[15px] text-muted hover:text-fg">
-          ← Back to portfolio
+          ← Back to home
         </Link>
         <p className="flex min-h-11 flex-wrap items-center gap-x-1.5 text-sm text-muted">
           Prefer email?{" "}

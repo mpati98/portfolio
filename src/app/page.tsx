@@ -67,11 +67,7 @@ export default function Home() {
       <main id="main">
         <section aria-labelledby="hero-heading" className="border-b border-line-section pt-20 pb-24">
           <div className={container}>
-            <p className="font-serif-display text-[15px] italic tracking-[0.3em] text-accent">{site.kicker}</p>
-            <h1
-              id="hero-heading"
-              className="mt-4 font-serif-display text-[clamp(34px,5.6vw,68px)] font-bold leading-[1.12]"
-            >
+            <h1 id="hero-heading" className="font-serif-display text-[clamp(34px,5.6vw,68px)] font-bold leading-[1.12]">
               {site.headline}
             </h1>
             <p className="mt-6 max-w-[540px] text-lg text-muted">{site.intro}</p>
